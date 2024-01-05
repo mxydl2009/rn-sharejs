@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, Text } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { useState, useEffect } from "react";
 import Article from "../../Components/Article";
@@ -14,7 +14,6 @@ function ArticleDetailScreen (props) {
       requestArticleById(route.params.articleId, user._id)
         .then(res => {
           const { article } = res.data;
-          console.log('article detail author', article.author)
           setArticleDetail({
             ...article
           });

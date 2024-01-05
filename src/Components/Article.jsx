@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import AuthorInfo from './AuthorInfo';
 
-import { ScrollView, View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Button, Chip, useTheme } from 'react-native-paper';
 import Markdown from 'react-native-markdown-display';
 import { useNavigation } from '@react-navigation/native';
@@ -25,11 +25,7 @@ const styles = StyleSheet.create({
   },
   articleTitle: {
     width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 10,
-    justifyContent: 'flex-start'
+    paddingVertical: 8
   },
   operation: {
     display: 'flex',
@@ -147,12 +143,13 @@ export default function Article(props) {
             }
           </View>
           <View style={[styles.articleTitle]}>
-            <Button 
-              onPress={navToRead} 
-              uppercase={false} 
-              labelStyle={{ fontSize: 15, marginHorizontal: 0 }}>
-              {title}
-            </Button>
+            <TouchableOpacity 
+              onPress={navToRead}
+            >
+              <Text
+              style={{ fontSize: 15, lineHeight: 24, color: colors.primary }}
+              >{title}</Text>
+            </TouchableOpacity>
           </View>
           
         </View>
@@ -160,7 +157,7 @@ export default function Article(props) {
           !content &&  
           (
             <View>
-              <Text style={{color: 'gray', fontSize: 13}}>{excerpts}</Text>
+              <Text style={{color: 'gray', fontSize: 13, lineHeight: 20}}>{excerpts}</Text>
             </View>
           )
         }
