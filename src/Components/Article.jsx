@@ -55,20 +55,20 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 8,
     paddingVertical: 15,
-    backgroundColor: 'rgb(199,227,227)',
+    backgroundColor: '#e2e2e2',
     borderRadius: 8
   },
   markdownStyle: {
     body: { fontFamily: 'Arial', fontSize: 16, color: '#333' },
-    heading1: { fontSize: 24, color: '#4CAF50', marginBottom: 8 },
-    heading2: { fontSize: 20, color: '#2196F3', marginBottom: 8 },
-    heading3: { fontSize: 18, color: '#795548', marginBottom: 8 },
-    heading4: { fontSize: 16, color: '#FF9800', marginBottom: 8 },
-    heading5: { fontSize: 14, color: '#F44336', marginBottom: 8 },
-    heading6: { fontSize: 12, color: '#9E9E9E', marginBottom: 8 },
-    paragraph: { marginVertical: 8 },
-    list: { marginVertical: 8 },
-    listItem: { flexDirection: 'row' },
+    heading1: { fontSize: 24, color: '#4CAF50', paddingVertical: 8 },
+    heading2: { fontSize: 20, color: '#2196F3', paddingVertical: 6 },
+    heading3: { fontSize: 18, color: '#795548', paddingVertical: 6 },
+    heading4: { fontSize: 16, color: '#FF9800', paddingVertical: 4 },
+    heading5: { fontSize: 14, color: '#F44336', paddingVertical: 4 },
+    heading6: { fontSize: 12, color: '#9E9E9E', paddingVertical: 2 },
+    paragraph: { marginVertical: 8,},
+    list: { marginVertical: 8, },
+    listItem: { flexDirection: 'row', },
     bulletItemText: { marginLeft: 8 },
     strong: { fontWeight: 'bold' },
     em: { fontStyle: 'italic' },
@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
     tableRow: { borderBottomWidth: 1, borderColor: '#ccc' },
     tableColumn: { padding: 8 },
     tableWrapper: { overflowX: 'scroll' },
+    code_inline: { backgroundColor: '#eee', padding: 4, borderRadius: 4 },
+    code_block: { backgroundColor: '#eee', padding: 8, borderRadius: 6 },
   }
 })
 

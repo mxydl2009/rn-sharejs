@@ -2,7 +2,7 @@ import { useEffect, useState, useRef }from 'react';
 import { useWindowDimensions, FlatList, SafeAreaView } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { useSelector } from 'react-redux';
-import { useTheme, ActivityIndicator, Paragraph } from 'react-native-paper';
+import { useTheme, ActivityIndicator, Paragraph, Divider } from 'react-native-paper';
 import Article from '../../Components/Article';
 import { requestArticles } from '../../utils/request';
 import EmptyComponent from '../../Components/Empty';
@@ -31,6 +31,7 @@ const AllRoute = (props) => {
       <FlatList
         data={articles}
         renderItem={({item}) => <Article {...item} />}
+        ItemSeparatorComponent={() => <Divider style={{height: 0.5}}/>}
         keyExtractor={item => item._id}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.2}
