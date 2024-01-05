@@ -2,11 +2,13 @@ import axios from 'axios'
 import storage from './Storage';
 import store from '../store';
 import { PENDING, RESOLVED } from '../store/loading/types';
+import { ERROR } from '../store/errMsg/types';
 
 let loadingCount = 0;
 
 const requestInstance = axios.create({
-  baseURL: 'https://sharejs.wiki/api'
+  baseURL: 'https://sharejs.wiki/api',
+  timeout: 5000
 });
 
 requestInstance.interceptors.request.use(async (config) => {
@@ -30,11 +32,6 @@ requestInstance.interceptors.response.use((response) => {
     });
   }
   if (error.response.status === 400) {
-    NAlert.show({
-      severity: 'error',
-      title: '请求有误',
-      content: error.response.data.message
-    }, 1500)
     return Promise.reject({
       code: 400,
       message: '请求有误'
@@ -75,6 +72,10 @@ const request = (config, needGlobalLoading = true) => {
             type: RESOLVED
           })
         }
+        store.dispatch({
+          type: ERROR,
+          payload: err.message
+        })
         console.log('err', err);
       })
 }

@@ -11,10 +11,6 @@
 // import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/login/actions';
-// import NAlert from "@/components/NAlert";
-// import { useRouter } from "next/router";
-// import { useState } from "react";
-// import { requestGetTempwd } from '@/request';
 import { useState } from 'react';
 import { StyleSheet, View } from "react-native";
 import { Headline, Text, Button, TextInput, Snackbar } from 'react-native-paper';

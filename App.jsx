@@ -14,8 +14,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './src/screens/Home/HomeScreen';
 import ProfileScreen from './src/screens/Profile/ProfileScreen';
-import { useTheme, Portal, Modal, ActivityIndicator } from 'react-native-paper';
+import { useTheme, Portal, Modal, ActivityIndicator, Snackbar } from 'react-native-paper';
 import { RESOLVED } from './src/store/loading/types';
+import { CLEAR } from './src/store/errMsg/types';
 
 // function Section({children, title}) {
 //   const isDarkMode = useColorScheme() === 'dark';
@@ -48,10 +49,16 @@ const Tab = createBottomTabNavigator();
 function App() {
   const { colors } = useTheme();
   const loading = useSelector(state => state.loading)
-  const dispatch = useDispatch()
+  const errMsg = useSelector(state => state.errMsg)
+  const dispatch = useDispatch();
   const hideModal = () => {
     dispatch({
       type: RESOLVED
+    })
+  }
+  const handleErrMsgDismiss = () => {
+    dispatch({
+      type: CLEAR
     })
   }
   return (
@@ -99,6 +106,18 @@ function App() {
         <ActivityIndicator animating={loading} color={colors.primary} size="large" />
         </Modal>
       </Portal>
+      <Snackbar
+        visible={errMsg !== ''}
+        onDismiss={handleErrMsgDismiss}
+        action={{
+          label: 'OK',
+          onPress: () => {
+            handleErrMsgDismiss();
+          },
+        }}
+        >
+          { errMsg }
+        </Snackbar>
     </NavigationContainer>
   );
 }
