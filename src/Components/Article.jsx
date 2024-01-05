@@ -150,7 +150,7 @@ export default function Article(props) {
             <Button 
               onPress={navToRead} 
               uppercase={false} 
-              labelStyle={{ fontSize: 16, marginHorizontal: 0 }}>
+              labelStyle={{ fontSize: 15, marginHorizontal: 0 }}>
               {title}
             </Button>
           </View>
@@ -160,16 +160,18 @@ export default function Article(props) {
           !content &&  
           (
             <View>
-              <Text>{excerpts}</Text>
+              <Text style={{color: 'gray', fontSize: 13}}>{excerpts}</Text>
             </View>
           )
         }
         <View style={[styles.operation]}>
           <View style={[styles.operate]}>
             <Button 
+              icon="page-next"
               style={[styles.operateItem]} 
               uppercase={false} 
-              labelStyle={{ fontSize: 14, marginHorizontal: 0 }}
+              labelStyle={{ fontSize: 13, marginLeft: 0, marginRight: 6 }}
+              contentStyle={{ flexDirection: 'row-reverse'}}
               onPress={navToRead}>
               阅读
             </Button>
