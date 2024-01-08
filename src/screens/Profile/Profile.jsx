@@ -36,6 +36,12 @@ const Item = ({ name, value }) => {
   )
 }
 const styles = StyleSheet.create({
+  page: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     width: '80%',
   },
@@ -71,31 +77,34 @@ const Profile = ({ user }) => {
     })
   }
   return (
-    <View style={[styles.container]}>
-      <Card mode="outlined">
-        <Card.Title title={`${user.username || '' }的名片`} right={rightContent} />
-        <Divider />
-        <Card.Content>
-          <View style={[styles.itemList]}>
-            <Item name={'用户名'} value={user.username} />
-            <Item name={'邮箱'} value={user.email} />
-            {
-              user.avatar &&
-              <Item name={'头像'} value={() => {
-                return user.avatar ?
-                  <Avatar.Image source={{ uri: user.avatar }} size={160} /> :
-                  <Avatar.Text label={user.username.charAt(0)} size={120} />
-                }
-              } />
-            }
-          </View>
-        </Card.Content>
-      </Card>
-      <Snackbar visible={feedbackContent !== ''} duration={2000}
-          onDismiss={handleFeedbackContentClose}>
-            { feedbackContent }
-      </Snackbar>
+    <View style={[styles.page]}>
+      <View style={[styles.container]}>
+        <Card mode="outlined">
+          <Card.Title title={`${user.username || '' }的名片`} right={rightContent} />
+          <Divider />
+          <Card.Content>
+            <View style={[styles.itemList]}>
+              <Item name={'用户名'} value={user.username} />
+              <Item name={'邮箱'} value={user.email} />
+              {
+                user.avatar &&
+                <Item name={'头像'} value={() => {
+                  return user.avatar ?
+                    <Avatar.Image source={{ uri: user.avatar }} size={160} /> :
+                    <Avatar.Text label={user.username.charAt(0)} size={120} />
+                  }
+                } />
+              }
+            </View>
+          </Card.Content>
+        </Card>
+        <Snackbar visible={feedbackContent !== ''} duration={2000}
+            onDismiss={handleFeedbackContentClose}>
+              { feedbackContent }
+        </Snackbar>
+      </View>
     </View>
+    
   )
 }
 

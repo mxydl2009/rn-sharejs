@@ -1,4 +1,3 @@
-import { View, SafeAreaView, ScrollView } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabViewScreen from './TabViewScreen';
 import ArticleDetailScreen from './ArticleDetailScreen';
@@ -6,7 +5,6 @@ import ArticleDetailScreen from './ArticleDetailScreen';
 const Stack = createNativeStackNavigator();
 
 function HomeScreen() {
-
   return (
     <Stack.Navigator>
       <Stack.Screen

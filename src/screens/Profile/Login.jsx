@@ -1,19 +1,8 @@
-// import Typography from "@mui/material/Typography";
-// import Box from '@mui/material/Box';
-// import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
-// import styles from './Login.module.scss';
-// import Link from 'next/link';
-// import { TextField, Tooltip, Snackbar, Alert } from "@mui/material";
-// import IconButton from '@mui/material/IconButton';
-// import InputAdornment from '@mui/material/InputAdornment';
-// import Visibility from '@mui/icons-material/Visibility';
-// import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/login/actions';
 import { useState } from 'react';
 import { StyleSheet, View } from "react-native";
-import { Headline, Text, Button, TextInput, Snackbar } from 'react-native-paper';
+import { Headline, Text, Button, TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -51,7 +40,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   formContent: {
-    // flex: 1
     display: 'flex',
     justifyContent: 'flex-start',
     rowGap: 60,
@@ -79,8 +67,8 @@ const styles = StyleSheet.create({
   }
 })
 
-function LoginScreen () {
-  // const router = useRouter();
+function Login ({ navigation }) {
+  const [ secureInput, setSecureInput] = useState(true);
   const dispatch = useDispatch();
   // // 响应或者校验的提示信息
   const [ feedbackContent, setFeedbackContent ] = useState('');
@@ -95,8 +83,6 @@ function LoginScreen () {
       .then(res => {
         console.log('login success', res);
         setFeedbackContent('login success');
-        // console.log(router.query);
-        // router.replace(router.query.redirectUrl || '/')
       }).catch(err => {
         console.log('login fail', err);
         setFeedbackContent(err.message)
@@ -106,6 +92,10 @@ function LoginScreen () {
   const handleFeedbackContentClose = () => {
     setFeedbackContent('');
   };
+
+  const toggleSecureInput = () => {
+    setSecureInput(!secureInput);
+  }
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -115,7 +105,12 @@ function LoginScreen () {
           </Headline>
           <View style={styles.signLink}>
             <Text>没有账号？点此</Text>
-            <Button mode="text" compact style={{ color: '#1976d2', marginHorizontal: 0 }}>注册</Button>
+            <Button mode="text" 
+              onPress={() => navigation.navigate('Signup')} 
+              compact 
+              style={{ color: '#1976d2', marginHorizontal: 0 }}>
+              注册
+            </Button>
           </View>
         </View>
       </View>
@@ -127,14 +122,14 @@ function LoginScreen () {
         onSubmit={values => handleSubmit(values)}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleBlur, handleSubmit, values,
+        {({ handleChange, handleSubmit, values,
           errors, isValid }) => (
           <View style={styles.formContent}>
             <View style={styles.formItem}>
               <TextInput
                 label="用户名"
                 name="username"
-                placeholder="请输入用户名"
+                placeholder=""
                 value={values.username}
                 onChangeText={handleChange('username')}
               />
@@ -146,12 +141,12 @@ function LoginScreen () {
               <TextInput
                 label="密码"
                 name="password"
-                secureTextEntry
-                placeholder="请输入密码"
+                secureTextEntry={secureInput}
+                placeholder=""
                 value={values.password}
                 onChangeText={handleChange('password')}
                 right={
-                  <TextInput.Icon name="eye" />
+                  <TextInput.Icon name="eye" onPress={toggleSecureInput} />
                 }
               />
               {errors.password &&
@@ -175,4 +170,4 @@ function LoginScreen () {
   )
 }
 
-export default LoginScreen;
+export default Login;

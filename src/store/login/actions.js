@@ -43,15 +43,17 @@ export const logout = () => (dispatch) => {
 }
 
 export const signup = (payload) => (dispatch) => {
+  console.log('signup action', payload);
   return requestUserSignup({
     ...payload
   })
   .then(res => {
-    console.log('signup: ', res)
-    if (res.data.signup) {
+    console.log('signup: ',  res.success);
+    if (res.success) {
+      console.log('signup success', res.success);
       return dispatch({
         type: LOGIN,
-        payload: res.data.user
+        payload: res.data.userInfo
       })
     }
     return Promise.reject({

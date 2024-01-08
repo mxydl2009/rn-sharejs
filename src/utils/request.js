@@ -28,7 +28,7 @@ requestInstance.interceptors.response.use((response) => {
   if (error.response.status === 401) {
     return Promise.reject({
       code: 401,
-      message: '无权限，请登录'
+      message: '当前未登录'
     });
   }
   if (error.response.status === 400) {

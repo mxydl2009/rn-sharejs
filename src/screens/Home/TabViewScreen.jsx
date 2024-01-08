@@ -1,90 +1,23 @@
-import { useEffect, useState, useRef }from 'react';
-import { useWindowDimensions, FlatList, SafeAreaView } from 'react-native';
+import { useEffect, useState }from 'react';
+import { useWindowDimensions } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { useSelector } from 'react-redux';
-import { useTheme, ActivityIndicator, Paragraph, Divider } from 'react-native-paper';
-import Article from '../../Components/Article';
-import { requestArticles } from '../../utils/request';
-import EmptyComponent from '../../Components/Empty';
+import { useTheme } from 'react-native-paper';
+import ViewFactory from '../../Components/ViewFactory';
+const AllRouteCom = ViewFactory();
+const ConcernRouteCom = ViewFactory();
+const MyRouteCom = ViewFactory();
+const AllRoute = (props) => (
+  <AllRouteCom {...props} />
+);
 
-const NoMoreData = ({text}) => {
-  return (
-    <Paragraph  style={{ 
-      textAlign: 'center',
-      color: 'gray',
-      marginVertical: 20
-    }}>
-      {text || '没有更多数据了' }
-    </Paragraph>
-  )
-}
+const ConcernRoute = (props) => (
+  <ConcernRouteCom {...props} />
+);;
 
-const AllRoute = (props) => {
-  const { articles, handleEndReached, isLoading, total } = props;
-  const renderFooter = () => {
-    return (total <= articles.length && articles.length > 0) ? 
-      <NoMoreData /> : 
-      <ActivityIndicator animating={isLoading} />
-  };
-  return (
-    <SafeAreaView>
-      <FlatList
-        data={articles}
-        renderItem={({item}) => <Article {...item} />}
-        ItemSeparatorComponent={() => <Divider style={{height: 0.5}}/>}
-        keyExtractor={item => item._id}
-        onEndReached={handleEndReached}
-        onEndReachedThreshold={0.2}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={EmptyComponent}
-      />
-    </SafeAreaView>
-  )
-};
-
-const ConcernRoute = (props) => {
-  const { articles, handleEndReached, isLoading, total } = props;
-  const renderFooter = () => {
-    return (total <= articles.length && articles.length > 0) ? 
-      <NoMoreData /> : 
-      <ActivityIndicator animating={isLoading} />
-  };
-  return (
-    <SafeAreaView>
-      <FlatList
-        data={articles}
-        renderItem={({item}) => <Article {...item} />}
-        keyExtractor={item => item._id}
-        onEndReached={handleEndReached}
-        onEndReachedThreshold={0.2}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={EmptyComponent}
-      />
-    </SafeAreaView>
-  )
-};
-
-const MyRoute = (props) => {
-  const { articles, handleEndReached, isLoading, total } = props;
-  const renderFooter = () => {
-    return (total <= articles.length && articles.length > 0) ? 
-      <NoMoreData /> : 
-      <ActivityIndicator animating={isLoading} />
-  };
-  return (
-    <SafeAreaView>
-      <FlatList
-        data={articles}
-        renderItem={({item}) => <Article {...item} />}
-        keyExtractor={item => item._id}
-        onEndReached={handleEndReached}
-        onEndReachedThreshold={0.2}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={EmptyComponent}
-      />
-    </SafeAreaView>
-  )
-};
+const MyRoute = (props) => (
+  <MyRouteCom {...props} />
+);
 
 function TabViewScreen() {
   const user = useSelector(state => state.user)
@@ -95,13 +28,6 @@ function TabViewScreen() {
   const [routes, setRoutes] = useState([
     { key: 'all', title: '全部文章' }
   ]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [ articles, setArticles ] = useState([])
-  const total = useRef(0);
-  const pageDefault = 1;
-  const pageSizeDefault = 8;
-  const [ page, setPage ] = useState(pageDefault);
 
   useEffect(() => {
     if (user.username) {
@@ -117,48 +43,20 @@ function TabViewScreen() {
     }
   }, [user.username])
 
-  useEffect(() => {
-    setIsLoading(true);
-    requestArticles({
-      currentPage: page,
-      pageSize: pageSizeDefault,
-      tag: '',
-      userId: index === 2? user._id: undefined,
-      concerns: index === 1? user.concerns: undefined
-    }, {}, false).then((res) => {
-      const { articles, totalCount } = res.data;
-
-      total.current = totalCount;
-      setArticles((preData) => [ ...preData, ...articles ])
-      setIsLoading(false);
-    })
-  }, [page, index])
-
   const handleIndexChange = (index) => {
     setIndex(index);
-    setPage(1);
-    setArticles([]);
-    setIsLoading(false);
-  }
-
-  const handleEndReached = () => {
-    console.log('end reached',  total.current, page * pageSizeDefault);
-    if (total.current > page * pageSizeDefault) {
-      // console.log('end reached', total, page * pageSizeDefault);
-      setPage((prePage) => prePage + 1)
-    }
   }
 
   const renderScene = ({route}) => {
     switch (route.key) {
       case 'all':
-        return <AllRoute articles={articles} handleEndReached={handleEndReached} isLoading={isLoading} total={total.current} />
+        return <AllRoute index={0} />
       case 'concern':
-        return <ConcernRoute articles={articles} handleEndReached={handleEndReached} isLoading={isLoading} total={total.current} />
+        return <ConcernRoute index={1} />
       case 'my':
-        return <MyRoute articles={articles} handleEndReached={handleEndReached} isLoading={isLoading} total={total.current} />
+        return <MyRoute index={2} />
       default:
-        return <AllRoute article={article} />
+        return <AllRoute index={0} />
     }
   }
 
