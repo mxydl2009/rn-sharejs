@@ -5,10 +5,13 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { LogBox } from 'react-native';
+// 当切换tab页时，有时候会出现warning: "Sending 'onAnimatedValueUpdate' with no listeners registered"
+LogBox.ignoreAllLogs();
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -17,6 +20,7 @@ import ProfileScreen from './src/screens/Profile/ProfileScreen';
 import { useTheme, Portal, Modal, ActivityIndicator, Snackbar } from 'react-native-paper';
 import { RESOLVED } from './src/store/loading/types';
 import { CLEAR } from './src/store/errMsg/types';
+import { getUserInfo } from './src/store/login/actions';
 
 // function Section({children, title}) {
 //   const isDarkMode = useColorScheme() === 'dark';
@@ -50,7 +54,16 @@ function App() {
   const { colors } = useTheme();
   const loading = useSelector(state => state.loading)
   const errMsg = useSelector(state => state.errMsg)
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch();
+  useEffect(() => {
+    // 根据Storage中的token获取用户信息，从而判断用户是否已登录
+    dispatch(getUserInfo())
+    .then()
+    .catch((err) => {
+      console.log('getUserInfo err', err);
+    })
+  }, [])
   const hideModal = () => {
     dispatch({
       type: RESOLVED
@@ -87,13 +100,13 @@ function App() {
         <Tab.Screen name="Home" component={HomeScreen}
           options={{ 
             headerShown: false,
-            title: 'Home',
+            title: '主页',
           }}
         />
         <Tab.Screen name="Profile" component={ProfileScreen}
           options={{ 
-            headerShown: true,
-            title: 'Profile',
+            headerShown: user._id ? true : false,
+            title: '个人资料',
           }}
         />
       </Tab.Navigator>
