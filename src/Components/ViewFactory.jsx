@@ -41,7 +41,11 @@ const NoMoreData = ({text}) => {
         const { articles, totalCount } = res.data;
   
         total.current = totalCount;
-        setArticles((preData) => [ ...preData, ...articles ])
+        if (page === 1) {
+          setArticles([...articles]);
+        } else {
+          setArticles((preData) => [ ...preData, ...articles ])
+        }
         setIsLoading(false);
       })
     }, [page, index])
@@ -49,6 +53,9 @@ const NoMoreData = ({text}) => {
       if (total.current > page * pageSizeDefault) {
         setPage((prePage) => prePage + 1)
       }
+    }
+    const handleRefresh = () => {
+      setPage(1);
     }
     const renderFooter = () => {
       return (total.current <= articles.length && articles.length > 0) ? 
@@ -62,6 +69,8 @@ const NoMoreData = ({text}) => {
           renderItem={({item}) => <Article {...item} />}
           ItemSeparatorComponent={() => <Divider style={{height: 0.5}}/>}
           keyExtractor={item => item._id}
+          refreshing={isLoading}
+          onRefresh={handleRefresh}
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.2}
           ListFooterComponent={renderFooter}
