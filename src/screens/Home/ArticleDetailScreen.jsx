@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { useState, useEffect } from "react";
 import Article from "../../Components/Article";
@@ -24,10 +24,10 @@ function ArticleDetailScreen (props) {
     }
   }, [route.params])
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={[{flex: 1}]}>
+      <View style={[{flex: 1}]}>
         <Article {...articleDetail} />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   )
 }
